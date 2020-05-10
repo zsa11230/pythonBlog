@@ -1,16 +1,15 @@
 <!DOCTYPE HTML>
-<html>
+<html lang=zh-CN manifest="cache.manifest">
 <head>
 <title>老王个人博客 — 一个站在java开发之路上的草根程序员个人博客网站</title>
 <meta charset="utf-8">
 <meta name="renderer" content="webkit|ie-comp|ie-stand">
 <meta http-equiv="X-UA-Compatible" content="IE=edge">
 <meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
 <meta name="keywords" content="个人博客,王风宇个人博客,个人博客系统,老王博客,王风宇">
 <meta name="description" content="Lao王博客系统，一个站在java开发之路上的草根程序员个人博客网站。">
 <LINK rel="Bookmark" href="/static/favicon.ico" >
-<LINK rel="Shortcut Icon" href="/static/favicon.ico" />
+<LINK rel="Shortcut Icon" href="/static/favicon.ico" >
 <!--[if lt IE 9]>
 <script type="text/javascript" src="/static/staticRes/js/html5shiv.js"></script>
 <script type="text/javascript" src="/static/staticRes/js/respond.min.js"></script>
@@ -29,7 +28,7 @@
     <div class="navbar navbar-fixed-top">
         <div class="container cl">
             <a class="navbar-logo hidden-xs" href="index.html">
-                <img class="logo" src="img/logo.png" alt="Lao王博客" />
+                <img class="logo" src="/static/img/logo.png" alt="Lao王博客" />
             </a>
             <a class="logo navbar-logo-m visible-xs" href="index.html">Lao王博客</a>
             <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:void(0);" onclick="showSide();">&#xe667;</a>
@@ -268,8 +267,8 @@
           
 				</ul>
   		<div class="text-c mb-20" id="moreBlog">
-	        <a class="btn  radius btn-block " href="javascript:;" onclick="moreBlog();">点击加载更多</a>
-	        <a class="btn  radius btn-block hidden" href="javascript:;">加载中……</a>
+	        <a class="btn  radius btn-block " href="javascript:" onclick="moreBlog();">点击加载更多</a>
+	        <a class="btn  radius btn-block hidden" href="javascript:">加载中……</a>
 	    </div>
 		</div>
   </div>
@@ -418,16 +417,16 @@
             </div>
             <div class="panel-body">
                 <ul class="recent">
-                    <div class="item"><img src="img/40.jpg" alt=""></div>
-                    <div class="item"><img src="img/40.jpg" alt=""></div>
-                    <div class="item"><img src="img/40.jpg" alt=""></div>
-                    <div class="item"><img src="img/40.jpg" alt=""></div>
-                    <div class="item"><img src="img/40.jpg" alt=""></div>
-                    <div class="item"><img src="img/40.jpg" alt=""></div>
-                    <div class="item"><img src="img/40.jpg" alt=""></div>
-                    <div class="item"><img src="img/40.jpg" alt=""></div>
-                    <div class="item"><img src="img/40.jpg" alt=""></div>
-                    <div class="item"><img src="img/40.jpg" alt=""></div>
+                    <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                    <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                    <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                    <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                    <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                    <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                    <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                    <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                    <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                    <li class="item"><img src="/static/img/40.jpg" alt=""></li>
                 </ul>
             </div>
         </div>
@@ -466,8 +465,7 @@
 <script>
 $(function(){
 //幻灯片
-jQuery(".slider_main .slider").slide({mainCell: ".bd ul", titCell: ".hd li", trigger: "mouseover", effect: "leftLoop", autoPlay: true, delayTime: 700, interTime: 2000, pnLoop: true, titOnClassName: "active"})
-//tips
+jQuery(".slider_main .slider").slide({mainCell: ".bd ul", titCell: ".hd li", trigger: "mouseover", effect: "leftLoop", autoPlay: true, delayTime: 700, interTime: 2000, pnLoop: true, titOnClassName: "active"});
 jQuery(".slideTxtBox").slide({titCell: ".hd ul", mainCell: ".bd ul", autoPage: true, effect: "top", autoPlay: true});
 //标签
 	$(".tags a").each(function(){
