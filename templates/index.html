@@ -244,18 +244,10 @@
                 <a href=""><strong>标签云</strong></a>
             </div>
             <div class="tab-category-item">
-                <div class="tags"><a href="http://www.h-ui.net/">H-ui前端框架</a> <a
-                        href="http://www.h-ui.net/websafecolors.shtml">Web安全色</a> <a
-                        href="http://www.h-ui.net/Hui-4.4-Unslider.shtml">jQuery轮播插件</a> <a
-                        href="http://idc.likejianzhan.com/vhost/korea_hosting.php">韩国云虚拟主机</a> <a
-                        href="http://www.h-ui.net/bug.shtml">IEbug</a> <a
-                        href="http://www.h-ui.net/site.shtml">IT网址导航</a> <a href="http://www.h-ui.net/icon/index.shtml">网站常用小图标</a>
-                    <a href="http://www.h-ui.net/tools/jsformat.shtml">web工具箱</a> <a
-                            href="http://www.h-ui.net/bg/index.shtml">网站常用背景素材</a> <a
-                            href="http://www.h-ui.net/yuedu/chm.shtml">H-ui阅读</a> <a
-                            href="http://www.h-ui.net/easydialog-v2.0/index.html">弹出层插件</a> <a
-                            href="http://www.h-ui.net/SuperSlide2.1/demo.html">SuperSlide插件</a> <a
-                            href="http://www.h-ui.net/TouchSlide1.1/demo.html">TouchSlide</a></div>
+                <div class="tags">
+                    {% for x in tags %}
+                        <a href="http://www.h-ui.net/">{{ x.name }}</a>
+                    {% endfor %}
             </div>
         </div>
         <!--图片-->
