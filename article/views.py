@@ -22,3 +22,12 @@ def index(request):
         'images': images,  # 轮播图
     }
     return render(request, 'index.html', context)
+
+
+# 文章详情页面
+def article_detail(request, article_id):
+    blog = models.Article.objects.get(id=article_id)
+    context = {
+        'blog': blog,  # 文章内容数据
+    }
+    return render(request, 'article_detail.html', context)

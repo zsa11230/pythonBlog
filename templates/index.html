@@ -98,32 +98,35 @@
                 <a href=""><strong class="current">最新发布</strong></a>
             </div>
         </div>
+        <!--文章列表-->
         <div class="art_content">
             <ul class="index_arc">
                 {% for x in articles %}
                     {% if x.image_url != '' %}
                         <li class="index_arc_item">
-                            <a href="#" class="pic">
+                            <a href="article/detail/{{ x.id }}" class="pic">
                                 <img class="lazyload" alt="应该选" src="{{ x.image_url }}"/>
                             </a>
                             {% else %}
                         <li class="index_arc_item no_pic">
                     {% endif %}
 
-                <h4 class="title"><a href="article_detail.html">{{ x.title }}</a></h4>
-                <div class="date_hits">
-                    <span>老王</span>
-                    <span>{{ x.created_time }}</span>
-                    <span><a href="/article-lists/10.html">程序人生</a></span>
-                    <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> 276° </p>
-                    <p class="commonts"><i class="Hui-iconfont" title="评论数">&#xe622;</i> <span
-                            class="cy_cmt_count">20</span>
-                    </p>
-                </div>
-                <div class="desc">
-                    {{ x.intro }}
-                </div>
-                </li>
+                    <h4 class="title"><a href="article/detail/{{ x.id }}">{{ x.title }}</a></h4>
+                    <div class="date_hits">
+                        <span>老王</span>
+                        <span>{{ x.created_time }}</span>
+                        {% for t in x.tags.all %}
+                            <span><a href="/article-lists/10.html">{{ t.name }}</a></span>
+                        {% endfor %}
+                        <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> 276° </p>
+                        <p class="commonts"><i class="Hui-iconfont" title="评论数">&#xe622;</i> <span
+                                class="cy_cmt_count">20</span>
+                        </p>
+                    </div>
+                    <div class="desc">
+                        {{ x.intro }}
+                    </div>
+                    </li>
                 {% endfor %}
 
             </ul>
