@@ -79,7 +79,7 @@
                 <div class="bd">
                     <ul>
                         {% for x in images %}
-                            <li><a href="#" target="_blank"><img src="{{ x.image_url }}" alt="{{ x.title }}"></a></li>
+                            <li><a href="article/detail/{{ x.id }}" target="_blank"><img src="{{ x.image_url }}" alt="{{ x.title }}"></a></li>
                         {% endfor %}
                     </ul>
                 </div>
@@ -113,12 +113,12 @@
 
                     <h4 class="title"><a href="article/detail/{{ x.id }}">{{ x.title }}</a></h4>
                     <div class="date_hits">
-                        <span>老王</span>
+                        <span>{{ x.user.username }}</span>
                         <span>{{ x.created_time }}</span>
                         {% for t in x.tags.all %}
                             <span><a href="/article-lists/10.html">{{ t.name }}</a></span>
                         {% endfor %}
-                        <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> 276° </p>
+                        <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> {{ x.hits }}° </p>
                         <p class="commonts"><i class="Hui-iconfont" title="评论数">&#xe622;</i> <span
                                 class="cy_cmt_count">20</span>
                         </p>

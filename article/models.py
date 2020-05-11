@@ -50,3 +50,5 @@ class Article(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='作者')
     # created_time，我们使用了DateTimeField字段，添加了一个auto_now_add参数，自动获取添加时间！
     created_time = models.DateTimeField('发布时间', auto_now_add=True)
+    # 点击数
+    hits = models.IntegerField('点击数')
