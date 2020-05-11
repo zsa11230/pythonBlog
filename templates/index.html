@@ -78,13 +78,15 @@
             <div class="slider">
                 <div class="bd">
                     <ul>
-                        <li><a href="#" target="_blank"><img src="/static/img/temp/banner1.jpg"></a></li>
-                        <li><a href="#" target="_blank"><img src="/static/img/temp/banner8.png"></a></li>
+                        {% for x in images %}
+                            <li><a href="#" target="_blank"><img src="{{ x.image_url }}" alt="{{ x.title }}"></a></li>
+                        {% endfor %}
                     </ul>
                 </div>
                 <ol class="hd cl dots">
-                    <li>1</li>
-                    <li>2</li>
+                    {% for x in images %}
+                        <li></li>
+                    {% endfor %}
                 </ol>
                 <a class="slider-arrow prev" href="javascript:void(0)"></a>
                 <a class="slider-arrow next" href="javascript:void(0)"></a>
