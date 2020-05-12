@@ -298,7 +298,7 @@ a.blog_link{ color:#1CA368;}
 ul {
     list-style: none;
 }
-ul.infos {
+.infos {
     overflow: hidden;
     margin: 20px 30px 20px 0;
     line-height: 28px;
@@ -307,7 +307,7 @@ ul.infos {
     color: #666;
 }
 
-ul.infos p {
+.infos p {
     margin-bottom: 5px;
 }
 
