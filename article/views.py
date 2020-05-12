@@ -27,6 +27,9 @@ def index(request):
 # 文章详情页面
 def article_detail(request, article_id):
     blog = models.Article.objects.get(id=article_id)
+    # 每访问一次增加一点击量
+    blog.hits = blog.hits + 1
+    blog.save()
     context = {
         'blog': blog,  # 文章内容数据
     }
