@@ -130,3 +130,6 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [
     (os.path.join(BASE_DIR, 'static'))
 ]
+
+# （视图函数登录权限跳转要用）
+LOGIN_URL="/login"

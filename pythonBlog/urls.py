@@ -15,12 +15,16 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from article import views
+from article import views as article_views
+from user import views as user_views
 from django.conf.urls import url
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('/', views.index),
-    path('article/detail/<int:article_id>', views.article_detail),
-    url(r'^$', views.index),
+    path('index', article_views.index),
+    path('article/detail/<int:article_id>', article_views.article_detail),
+    # 无路由情况下跳转到首页
+    url(r'^$', article_views.index),
+    path('login',user_views.login_html),
+    path('login_request',user_views.login),
 ]
