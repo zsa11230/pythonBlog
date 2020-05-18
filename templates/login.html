@@ -33,10 +33,11 @@
                     <i style="top: 0">Log/Sign in</i>
                 </div>
                 <span>
-                    <form action="post">
-                        <p class="form"><input type="text" id="user" placeholder="username" /></p>
-                        <p class="form"><input type="password" id="passwd" placeholder="password"></p>
-                        <input type="button" value="Sign in/Log in" class="btn" onclick="login()" style="margin-right: 20px;">
+                    <form action="/login_request" method="POST">
+                        {% csrf_token %}
+                        <p class="form"><input type="text" name="username" id="username" placeholder="username" /></p>
+                        <p class="form"><input type="password" name="password" id="password" placeholder="password"></p>
+                        <input type="submit" value="Sign in/Log in" class="btn" style="margin-right: 20px;">
                     </form>
                     <a href="#">Forget your password?</a>
                 </span>

@@ -20,11 +20,12 @@ from user import views as user_views
 from django.conf.urls import url
 
 urlpatterns = [
+    path('login',user_views.login_html),
+    path('logout',user_views.user_logout,name="logout"),
+    path('login_request',user_views.user_login),
     path('admin/', admin.site.urls),
     path('index', article_views.index),
     path('article/detail/<int:article_id>', article_views.article_detail),
     # 无路由情况下跳转到首页
     url(r'^$', article_views.index),
-    path('login',user_views.login_html),
-    path('login_request',user_views.login),
 ]
