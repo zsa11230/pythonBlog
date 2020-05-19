@@ -37,3 +37,12 @@ def login_html(request):
 def user_logout(request):
     logout(request)
     return redirect('/')
+
+
+# 后台管理页面
+def backstage_manage(request):
+    manage_flag = request.user.is_superuser
+    if manage_flag:
+        return render(request, 'backstage/manage_index.html')
+    else:
+        return redirect('/')

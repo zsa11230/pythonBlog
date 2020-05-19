@@ -23,4 +23,6 @@ urlpatterns = [
     path('logout',views.user_logout,name="logout"),
     # 登录
     path('login_request',views.user_login),
+    # 后台管理页面
+    path('backstage/manage',views.backstage_manage),
 ]
