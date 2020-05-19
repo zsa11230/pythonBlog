@@ -33,7 +33,7 @@
                     <i style="top: 0">Log/Sign in</i>
                 </div>
                 <span>
-                    <form action="/login_request" method="POST">
+                    <form action="login_request" method="POST">
                         {% csrf_token %}
                         <p class="form"><input type="text" name="username" id="username" placeholder="username" /></p>
                         <p class="form"><input type="password" name="password" id="password" placeholder="password"></p>
