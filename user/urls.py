@@ -20,9 +20,11 @@ urlpatterns = [
     # 登录页面
     path('login',views.login_html),
     # 登出
-    path('logout',views.user_logout,name="logout"),
+    path('logout',views.user_logout, name="logout"),
     # 登录
     path('login_request',views.user_login),
     # 后台管理页面
     path('backstage/manage',views.backstage_manage),
+    # 后台文章管理页面
+    path("backstage/manage/article", views.backstage_article_manage),
 ]

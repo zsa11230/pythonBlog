@@ -1,6 +1,8 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.models import User
+from article import models
+from django.core.paginator import Paginator
 
 
 # 用户登录，若账号不存在则直接注册并登录
@@ -44,5 +46,28 @@ def backstage_manage(request):
     manage_flag = request.user.is_superuser
     if manage_flag:
         return render(request, 'backstage/manage_index.html')
+    else:
+        return redirect('/')
+
+
+# 后台文章管理页面
+def backstage_article_manage(request):
+    manage_flag = request.user.is_superuser
+    if manage_flag:
+        size = request.GET.get('size')
+        current = request.GET.get('current')
+        blog_index = models.Article.objects.all().order_by('-id')
+        if current is None:
+            current = 1
+        else:
+            int(current)
+        if size is None:
+            size = 10
+        else:
+            int(size)
+        paginator = Paginator(blog_index, size)
+        page = paginator.page(current)
+        context = {"page": page}
+        return render(request, 'backstage/manage_article.html', context)
     else:
         return redirect('/')
