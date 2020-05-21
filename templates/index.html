@@ -1,8 +1,7 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block webbody %}
-
-
+    {#走马图部分#}
     {% if images %}
         <template>
             <el-carousel indicator-position="outside">
@@ -15,7 +14,6 @@
                 {% endfor %}
             </el-carousel>
         </template>
-
         <style>
             .el-carousel__item h3 {
                 color: #475669;
@@ -26,21 +24,45 @@
             }
             .image {
                 width: 100%;
+                height:auto;
                 display: block;
             }
         </style>
     {% endif %}
 
-    {% if images %}
+    {#文章列表部分#}
+    {% if page %}
         <div>
-            {% for blog in articles %}
+            {% for blog in page %}
                 <el-col>
-                    <el-card shadow="hover">
-                        {{ blog.title }}
-                    </el-card>
+                    <a href="article/detail/{{ blog.id }}">
+                        <el-card shadow="hover">
+                            <div slot="header" class="clearfix">
+                                <span>{{ blog.title }}</span>
+                            </div>
+                            <div class="text item">
+                                {{ blog.intro }}
+                            </div>
+                        </el-card>
+                    </a>
                 </el-col>
             {% endfor %}
         </div>
+        {#判断当前页是否有上一页#}
+        {% if page.has_previous %}
+            <a href="/article/index?current={{page.previous_page_number}}" aria-label="Previous">
+                <span aria-hidden="true">
+                    <el-button type="info" plain>上一页</el-button>
+                </span>
+            </a>
+        {% endif %}
+        {#判断当前页是否有下一页#}
+        {% if page.has_next %}
+            <a href="/article/index?current={{page.next_page_number}}" aria-label="Next">
+                <span aria-hidden="true">
+                    <el-button type="info" plain>下一页</el-button>
+                </span>
+            </a>
+        {% endif %}
     {% endif %}
-
 {% endblock %}

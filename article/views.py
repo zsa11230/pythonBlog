@@ -1,12 +1,14 @@
 from django.shortcuts import render
 from article import models
+from django.core.paginator import Paginator
 
 
 def index(request):
-    blog_index = models.Article.objects.all().order_by('-id')
+    # 获取文章列表
+    blog_images = models.Article.objects.all().order_by('hits')
     tags = models.Tags.objects.order_by('-id')[0:10]
     images = []
-    for art in blog_index:
+    for art in blog_images:
         if len(art.image_url) != 0:
             if len(images) < 5:
                 img = models.Article()
@@ -16,10 +18,24 @@ def index(request):
                 images.append(img)
             else:
                 break
+
+    size = request.GET.get('size')
+    current = request.GET.get('current')
+    blog_index = models.Article.objects.all().order_by('-id')
+    if current is None:
+        current = 1
+    else:
+        int(current)
+    if size is None:
+        size = 10
+    else:
+        int(size)
+    paginator = Paginator(blog_index, size)
+    page = paginator.page(current)
     context = {
-        'articles': blog_index,  # 文章数据
         'tags': tags,  # 标签
         'images': images,  # 轮播图
+        "page": page,  # 文章数据
     }
     return render(request, 'index.html', context)
 
