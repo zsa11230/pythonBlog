@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block webbody %}
-    {#走马图部分#}
+    <!--走马图部分-->
     {% if images %}
         <template>
             <el-carousel indicator-position="outside">
@@ -22,15 +22,15 @@
                 line-height: 300px;
                 margin: 0;
             }
+
             .image {
                 width: 100%;
-                height:auto;
+                height: auto;
                 display: block;
             }
         </style>
     {% endif %}
-
-    {#文章列表部分#}
+    <!--文章列表部分-->
     {% if page %}
         <div>
             {% for blog in page %}
@@ -48,21 +48,27 @@
                 </el-col>
             {% endfor %}
         </div>
-        {#判断当前页是否有上一页#}
+        <!--判断当前页是否有上一页-->
         {% if page.has_previous %}
-            <a href="/article/index?current={{page.previous_page_number}}" aria-label="Previous">
+            <a href="/article/index?current={{ page.previous_page_number }}" aria-label="Previous">
                 <span aria-hidden="true">
                     <el-button type="info" plain>上一页</el-button>
                 </span>
             </a>
         {% endif %}
-        {#判断当前页是否有下一页#}
+        <!--判断当前页是否有下一页-->
         {% if page.has_next %}
-            <a href="/article/index?current={{page.next_page_number}}" aria-label="Next">
+            <a href="/article/index?current={{ page.next_page_number }}" aria-label="Next">
                 <span aria-hidden="true">
                     <el-button type="info" plain>下一页</el-button>
                 </span>
             </a>
         {% endif %}
     {% endif %}
+
+    <div id="tagscloud">
+        {% for x in tags %}
+            <a href="http://sc.chinaz.com/" class="tagc1">{{ x.name }}</a>
+        {% endfor %}
+    </div>
 {% endblock %}

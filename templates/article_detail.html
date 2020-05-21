@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block webbody %}
+    <!--文章标题-->
+    <h1>{{ blog.title }}</h1>
+    <!--文章正文-->
+    <div class="infos">
+        {{ blog.body | safe}}
+    </div>
+
+    <div>
+        <p><span>关键字</span>：
+            {% for t in blog.tags.all %}
+                <a class="label label-default" href="">{{ t.name }}</a>
+            {% endfor %}
+    </div>
+{% endblock %}

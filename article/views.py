@@ -6,7 +6,7 @@ from django.core.paginator import Paginator
 def index(request):
     # 获取文章列表
     blog_images = models.Article.objects.all().order_by('hits')
-    tags = models.Tags.objects.order_by('-id')[0:10]
+    tags = models.Tags.objects.order_by('-id')[0:20]
     images = []
     for art in blog_images:
         if len(art.image_url) != 0:
