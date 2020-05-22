@@ -16,7 +16,7 @@ window.onload=function ()
 {
 	var i=0;
 	var oTag=null;
-	oDiv=document.getElementById('tagscloud');
+	oDiv=document.getElementById('tagsCloud');
 	aA=oDiv.getElementsByTagName('a');
 	for(i=0;i<aA.length;i++)
 	{
