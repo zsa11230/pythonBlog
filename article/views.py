@@ -1,6 +1,8 @@
+import json
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import render, redirect
 from article import models
-from django.core.paginator import Paginator
+from django.core.paginator import Paginator, EmptyPage
 
 
 def index(request):
@@ -18,26 +20,58 @@ def index(request):
                 images.append(img)
             else:
                 break
+    blog_index = models.Article.objects.all().order_by('-id')[0:10]
+    context = {
+        'tags': tags,  # 标签
+        'images': images,  # 轮播图
+        "page": blog_index,  # 文章数据
+    }
+    return render(request, 'index.html', context)
 
+
+# 加载更多ajax
+def article_more(request):
+    blog_index = models.Article.objects.all().order_by('-id')
     size = request.GET.get('size')
     current = request.GET.get('current')
-    blog_index = models.Article.objects.all().order_by('-id')
-    if current is None:
+    if current is None or current == '':
         current = 1
     else:
         int(current)
-    if size is None:
+    if size is None or current == '':
         size = 10
     else:
         int(size)
     paginator = Paginator(blog_index, size)
-    page = paginator.page(current)
-    context = {
-        'tags': tags,  # 标签
-        'images': images,  # 轮播图
-        "page": page,  # 文章数据
-    }
-    return render(request, 'index.html', context)
+    try:
+        page = paginator.page(current)
+    except EmptyPage:
+        return HttpResponse(None)
+
+    print("666666:" + str(len(page)))
+    result = []
+    for blog in page:
+        tags = blog.tags.all()
+        tags_result = []
+        for tag in tags:
+            tags_result.append(tag.name)
+        context = {
+            'image_url': blog.image_url,  # 预览图地址
+            'id': blog.id,  # id
+            'title': blog.title,  # 标题
+            'intro': blog.intro,  # 标题
+            'username': blog.user.username,  # 作者名
+            'created_time': str(blog.created_time),  # 创建时间
+            'hits': blog.hits,  # 点击数
+            'tags': tags_result,  # 标签
+        }
+        result.append(context)
+
+    return HttpResponse(json.dumps({
+        "blog_index": result,
+        "current": current,
+        "size": size,
+    }))
 
 
 # 文章详情页面

@@ -25,4 +25,6 @@ urlpatterns = [
     path('create', views.article_create_html),
     # 文章新增页
     path('create_request', views.article_create_request),
+    # 首页加载更多文章ajax
+    path('more', views.article_more),
 ]

@@ -34,7 +34,7 @@
             <!--文章列表-->
             <div class="art_content">
                 <ul class="index_arc">
-                    {% for x in articles %}
+                    {% for x in page %}
                         {% if x.image_url != '' %}
                             <li class="index_arc_item">
                                 <a href="article/detail/{{ x.id }}" class="pic">
@@ -64,8 +64,9 @@
 
                 </ul>
                 <div class="text-c mb-20" id="moreBlog">
-                    <a class="btn  radius btn-block " href="javascript:" onclick="moreBlog();">点击加载更多</a>
-                    <a class="btn  radius btn-block hidden" href="javascript:">加载中……</a>
+                    <a id="moreBlog_btn" class="btn  radius btn-block " href="javascript:">点击加载更多</a>
+                    <input id="current" type="hidden" value="">
+                    <input id="size" type="hidden" value="10">
                 </div>
             </div>
         </div>
@@ -230,4 +231,37 @@
             </div>
         </div>
     </section>
+
+    <script>
+        $("#moreBlog_btn").click(function(){
+            let param = $("#current").val();
+            console.log(param);
+            $.ajax({url:"/article/more?current="+param,success:function(result){
+                if(result !== 'None'){
+                    const json_data = JSON.parse(result);
+                    for (let i = 0; i < json_data.blog_index.length; i++) {
+                        const blog = json_data.blog_index[i];
+                        let liHead = '';
+                        if(blog.image_url === ''){
+                            liHead = '<li class="index_arc_item"><a href="article/detail/'+ blog.id +'" class="pic"><img class="lazyload" alt="应该选" src="'+ blog.image_url +'"></a>';
+                        }
+                        else{
+                            liHead = '<li class="index_arc_item no_pic">';
+                        }
+                        const htmlText1 = '<h4 class="title"><a href="article/detail/'+ blog.id +'">'+ blog.title +'</a></h4>';
+                        const htmlText2 = '<div class="date_hits"><span>'+ blog.username +'</span><span>'+ blog.created_time +'</span>';
+                        const htmlText3 = '<p class="hits"><i class="Hui-iconfont" title="点击量">&#xe622;</i>'+ blog.hits +' ° </p>';
+                        const htmlText4 = '<p class="commonts"><i class="Hui-iconfont" title="评论数">&#xe622;</i><span class="cy_cmt_count">20</span></p>';
+                        const htmlText5 = '</div><div class="desc">'+ blog.intro +'</div>';
+
+                        $(".index_arc").append(liHead+htmlText1+htmlText2+htmlText3+htmlText4+htmlText5)
+                    }
+                    $("#current").val((parseInt(json_data.current))+1)
+                }
+                else{
+                    $("#moreBlog").text("没有更多啦~")
+                }
+            }});
+        });
+    </script>
 {% endblock %}
