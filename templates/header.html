@@ -1,13 +1,33 @@
-<el-header>
-    <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
-        <el-menu-item index="5"><a href="" style="font-size: 25px; font-family: 'Courier New', Monospace" ></a></el-menu-item>
-        <el-menu-item index="2"><a href="">归档</a></el-menu-item>
-        <el-menu-item index="3"><a href="">分类</a></el-menu-item>
-        <el-menu-item index="4"><a href="">标签</a></el-menu-item>
-        <el-menu-item index="6"><a href="">自语</a></el-menu-item>
-        <el-menu-item index="7"><a href="">关于我</a></el-menu-item>
-        <el-menu-item index="8"><a href="">RSS</a></el-menu-item>
-    </el-menu>
-    <div class="line"></div>
-    <br><br>
-</el-header>
+<header class="navbar-wrapper">
+    <div class="navbar navbar-fixed-top">
+        <div class="container cl">
+            <a class="navbar-logo hidden-xs" href="/">
+                <img class="logo" src="/static/img/logo.png" alt="Lao王博客"/>
+            </a>
+            <a class="logo navbar-logo-m visible-xs" href="index.html">Lao王博客</a>
+            <a aria-hidden="false" class="nav-toggle Hui-iconfont visible-xs" href="javascript:void(0);"
+               onclick="showSide();">&#xe667;</a>
+            <nav class="nav navbar-nav nav-collapse w_menu" role="navigation">
+                <ul class="cl">
+                    <li class="active"><a href="/" data-hover="首页">首页</a></li>
+                    <li><a href="about.html" data-hover="关于我">关于我</a></li>
+                    <li><a href="mood.html" data-hover="碎言碎语">碎言碎语</a></li>
+                    <li><a href="article.html" data-hover="学无止尽">学无止尽</a></li>
+                    <li><a href="board.html" data-hover="留言板">留言板</a></li>
+                </ul>
+            </nav>
+            <nav class="navbar-nav navbar-userbar hidden-xs hidden-sm " style="top: 0;">
+                <ul class="cl">
+                    <li class="userInfo dropDown dropDown_hover">
+                        {% if request.user.username != '' %}
+                            <a href="/article/create">写文章</a>&nbsp;&nbsp;{{ request.user }}<a href="user/logout">&nbsp;登出</a>
+                        {% else %}
+                            <a href="user/login">&nbsp;登入</a>
+                        {% endif %}
+
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</header>

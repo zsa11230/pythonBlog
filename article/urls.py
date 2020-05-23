@@ -21,4 +21,8 @@ urlpatterns = [
     path('index', views.index),
     # 文章详情页
     path('detail/<int:article_id>', views.article_detail),
+    # 文章新增页
+    path('create', views.article_create_html),
+    # 文章新增页
+    path('create_request', views.article_create_request),
 ]

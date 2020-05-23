@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% load static from staticfiles %}
+{% block webbody %}
+    <script src="/static/js/HandyEditor.min.js"></script>
+    <form action="/article/create_request" method="post">
+        {% csrf_token %}
+        标题：
+        <input name="title" placeholder="请输入内容">
+        引用图片地址：
+        <input name="image_url" placeholder="请输入内容">
+        简介：
+        <input name="intro" placeholder="请输入内容">
+        <textarea id="editor" name="body" rows="5" style="display: none;"></textarea>
+        <br>
+        分类：
+        <select name="category">
+            {% for category in categories %}
+                <option value ="{{ category.id }}">{{ category.name }}</option>
+            {% endfor %}
+        </select>
+        <p>
+        标签：
+            <input name="tags" placeholder="请输入内容">
+            <button onclick="getSubmit()">保存</button>
+    </form>
+
+
+    <script type="text/javascript">
+        const he = HE.getEditor('editor');
+        function getSubmit() {
+            document.getElementsByName("body")[0].value = he.getHtml();
+        }
+    </script>
+
+{% endblock %}

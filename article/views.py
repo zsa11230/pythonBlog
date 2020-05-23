@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from article import models
 from django.core.paginator import Paginator
 
@@ -50,3 +50,29 @@ def article_detail(request, article_id):
         'blog': blog,  # 文章内容数据
     }
     return render(request, 'article_detail.html', context)
+
+
+# 文章新增页面
+def article_create_html(request):
+    categories = models.Category.objects.all().order_by('-id')
+    context = {
+        'categories': categories,  # 分类
+    }
+    return render(request, 'article_create.html', context)
+
+
+def article_create_request(request):
+    user = request.user
+    if user is None:
+        return redirect('/user/login')
+    title = request.POST.get("title")
+    image_url = request.POST.get("image_url")
+    intro = request.POST.get("intro")
+    category_id = int(request.POST.get("category"))
+    category = models.Category.objects.get(id=category_id)
+    tag_id = int(request.POST.get("tags"))
+    tags = models.Tags.objects.get(id=tag_id)
+    body = request.POST.get("body")
+    new_article = models.Article.objects.create(title=title, image_url=image_url
+                                                , intro=intro, category=category, body=body, user=user, hits=0)
+    return redirect('/article/detail/' + str(new_article.id))

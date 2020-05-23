@@ -1,74 +1,233 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block webbody %}
-    <!--走马图部分-->
-    {% if images %}
-        <template>
-            <el-carousel indicator-position="outside">
-                {% for image in images %}
-                    <el-carousel-item>
-                        <el-card :body-style="{ padding: '0px' }">
-                            <a href="/"><img src="{{ image.image_url }}" class="image" alt="{{ image.title }}"></a>
-                        </el-card>
-                    </el-carousel-item>
-                {% endfor %}
-            </el-carousel>
-        </template>
-        <style>
-            .el-carousel__item h3 {
-                color: #475669;
-                font-size: 18px;
-                opacity: 0.75;
-                line-height: 300px;
-                margin: 0;
-            }
+    <section class="container pt-20">
+        <!--left-->
+        <div class="col-sm-9 col-md-9">
+            <!--滚动图-->
+            <div class="slider_main">
+                <div class="slider">
+                    <div class="bd">
+                        <ul>
+                            {% for x in images %}
+                                <li><a href="article/detail/{{ x.id }}" target="_blank"><img src="{{ x.image_url }}"
+                                                                                             alt="{{ x.title }}"></a>
+                                </li>
+                            {% endfor %}
+                        </ul>
+                    </div>
+                    <ol class="hd cl dots">
+                        {% for x in images %}
+                            <li></li>
+                        {% endfor %}
+                    </ol>
+                    <a class="slider-arrow prev" href="javascript:void(0)"></a>
+                    <a class="slider-arrow next" href="javascript:void(0)"></a>
+                </div>
+            </div>
 
-            .image {
-                width: 100%;
-                height: auto;
-                display: block;
-            }
-        </style>
-    {% endif %}
-    <!--文章列表部分-->
-    {% if page %}
-        <div>
-            {% for blog in page %}
-                <el-col>
-                    <a href="article/detail/{{ blog.id }}">
-                        <el-card shadow="hover">
-                            <div slot="header" class="clearfix">
-                                <span>{{ blog.title }}</span>
-                            </div>
-                            <div class="text item">
-                                {{ blog.intro }}
-                            </div>
-                        </el-card>
-                    </a>
-                </el-col>
-            {% endfor %}
+            <div class="mt-20 bg-fff box-shadow radius mb-5">
+                <div class="tab-category">
+                    <a href=""><strong class="current">最新发布</strong></a>
+                </div>
+            </div>
+            <!--文章列表-->
+            <div class="art_content">
+                <ul class="index_arc">
+                    {% for x in articles %}
+                        {% if x.image_url != '' %}
+                            <li class="index_arc_item">
+                                <a href="article/detail/{{ x.id }}" class="pic">
+                                    <img class="lazyload" alt="应该选" src="{{ x.image_url }}"/>
+                                </a>
+                                {% else %}
+                            <li class="index_arc_item no_pic">
+                        {% endif %}
+
+                    <h4 class="title"><a href="article/detail/{{ x.id }}">{{ x.title }}</a></h4>
+                    <div class="date_hits">
+                        <span>{{ x.user.username }}</span>
+                        <span>{{ x.created_time }}</span>
+                        {% for t in x.tags.all %}
+                            <span><a href="/article-lists/10.html">{{ t.name }}</a></span>
+                        {% endfor %}
+                        <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> {{ x.hits }}° </p>
+                        <p class="commonts"><i class="Hui-iconfont" title="评论数">&#xe622;</i> <span
+                                class="cy_cmt_count">20</span>
+                        </p>
+                    </div>
+                    <div class="desc">
+                        {{ x.intro }}
+                    </div>
+                    </li>
+                    {% endfor %}
+
+                </ul>
+                <div class="text-c mb-20" id="moreBlog">
+                    <a class="btn  radius btn-block " href="javascript:" onclick="moreBlog();">点击加载更多</a>
+                    <a class="btn  radius btn-block hidden" href="javascript:">加载中……</a>
+                </div>
+            </div>
         </div>
-        <!--判断当前页是否有上一页-->
-        {% if page.has_previous %}
-            <a href="/article/index?current={{ page.previous_page_number }}" aria-label="Previous">
-                <span aria-hidden="true">
-                    <el-button type="info" plain>上一页</el-button>
-                </span>
-            </a>
-        {% endif %}
-        <!--判断当前页是否有下一页-->
-        {% if page.has_next %}
-            <a href="/article/index?current={{ page.next_page_number }}" aria-label="Next">
-                <span aria-hidden="true">
-                    <el-button type="info" plain>下一页</el-button>
-                </span>
-            </a>
-        {% endif %}
-    {% endif %}
 
-    <div id="tagsCloud">
-        {% for x in tags %}
-            <a href="http://sc.chinaz.com/" class="tagColor">{{ x.name }}</a>
-        {% endfor %}
-    </div>
+        <!--right-->
+        <div class="col-sm-3 col-md-3">
+
+            <!--站点声明-->
+            <div class="panel panel-default mb-20">
+                <div class="panel-body">
+                    <i class="Hui-iconfont" style="float: left;">&#xe62f;&nbsp;</i>
+                    <div class="slideTxtBox">
+                        <div class="bd">
+                            <ul>
+                                <li><a href="javascript:void(0);">Lao博客测试版上线，欢迎访问</a></li>
+                                <li><a href="javascript:void(0);">内容如有侵犯，请立即联系管理员删除</a></li>
+                                <li><a href="javascript:void(0);">本站内容仅供学习和参阅，不做任何商业用途</a></li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!--热门推荐-->
+            <div class="bg-fff box-shadow radius mb-20">
+                <div class="tab-category">
+                    <a href=""><strong>热门推荐</strong></a>
+                </div>
+                <div class="tab-category-item">
+                    <ul class="index_recd">
+                        <li>
+                            <a href="#">阻止a标签href默认跳转事件</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe622;</i> 276 </p>
+                        </li>
+                        <li>
+                            <a href="#">PHP面试题汇总</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe622;</i> 276 </p>
+                        </li>
+                        <li>
+                            <a href="#">阻止a标签href默认跳转事件</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe622;</i> 276 </p>
+                        </li>
+                        <li>
+                            <a href="#">阻止a标签href默认跳转事件</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe622;</i> 276 </p>
+                        </li>
+                        <li>
+                            <a href="#">PHP面试题汇总</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe622;</i> 276 </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--点击排行-->
+            <div class="bg-fff box-shadow radius mb-20">
+                <div class="tab-category">
+                    <a href=""><strong>点击排行</strong></a>
+                </div>
+                <div class="tab-category-item">
+                    <ul class="index_recd clickTop">
+                        <li>
+                            <a href="#">AJAX的刷新和前进后退问题解决</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> 276° </p>
+                        </li>
+                        <li>
+                            <a href="#">AJAX的刷新和前进后退问题解决</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> 276° </p>
+                        </li>
+                        <li>
+                            <a href="#">AJAX的刷新和前进后退问题解决</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> 276° </p>
+                        </li>
+                        <li>
+                            <a href="#">AJAX的刷新和前进后退问题解决</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> 276° </p>
+                        </li>
+                        <li>
+                            <a href="#">AJAX的刷新和前进后退问题解决</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> 276° </p>
+                        </li>
+                        <li>
+                            <a href="#">AJAX的刷新和前进后退问题解决</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> 276° </p>
+                        </li>
+                        <li>
+                            <a href="#">AJAX的刷新和前进后退问题解决</a>
+                            <p class="hits"><i class="Hui-iconfont" title="点击量">&#xe6c1;</i> 276° </p>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--标签-->
+            <div class="bg-fff box-shadow radius mb-20">
+                <div class="tab-category">
+                    <a href=""><strong>标签云</strong></a>
+                </div>
+                <div class="tab-category-item">
+                    <div class="tags">
+                        {% for x in tags %}
+                            <a href="http://www.h-ui.net/">{{ x.name }}</a>
+                        {% endfor %}
+                    </div>
+                </div>
+            </div>
+
+            <!--友情链接-->
+            <div class="bg-fff box-shadow radius mb-20">
+                <div class="tab-category">
+                    <a href=""><strong>隔壁邻居</strong></a>
+                </div>
+                <div class="tab-category-item">
+                    <span><i class="Hui-iconfont">&#xe6f1;</i><a href="#" class="btn-link">百度</a></span>
+                    <span><i class="Hui-iconfont">&#xe6f1;</i><a href="#" class="btn-link">淘宝</a></span>
+                    <span><i class="Hui-iconfont">&#xe6f1;</i><a href="#" class="btn-link">腾讯</a></span>
+                    <span><i class="Hui-iconfont">&#xe6f1;</i><a href="#" class="btn-link">慕课网</a></span>
+                    <span><i class="Hui-iconfont">&#xe6f1;</i><a href="#" class="btn-link">h-ui</a></span>
+                </div>
+            </div>
+            <!--最近访客-->
+            <div class="bg-fff box-shadow radius mb-20">
+                <div class="tab-category">
+                    <a href=""><strong>最近访客</strong></a>
+                </div>
+                <div class="panel-body">
+                    <ul class="recent">
+                        <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                        <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                        <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                        <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                        <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                        <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                        <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                        <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                        <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                        <li class="item"><img src="/static/img/40.jpg" alt=""></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!--分享-->
+            <div class="bg-fff box-shadow radius mb-20">
+                <div class="tab-category">
+                    <a href=""><strong>站点分享</strong></a>
+                </div>
+                <div class="panel-body">
+                    <div class="bdsharebuttonbox Hui-share"><a href="#" class="bds_weixin Hui-iconfont"
+                                                               data-cmd="weixin"
+                                                               title="分享到微信">&#xe694;</a><a href="#"
+                                                                                            class="bds_qzone Hui-iconfont"
+                                                                                            data-cmd="qzone"
+                                                                                            title="分享到QQ空间">&#xe6c8;</a>
+                        <a
+                                href="#" class="bds_sqq Hui-iconfont" data-cmd="sqq" title="分享到QQ好友">&#xe67b;</a> <a
+                                href="#"
+                                class="bds_tsina Hui-iconfont"
+                                data-cmd="tsina"
+                                title="分享到新浪微博">&#xe6da;</a>
+                        <a href="#" class="bds_tqq Hui-iconfont" data-cmd="tqq" title="分享到腾讯微博">&#xe6d9;</a></div>
+                </div>
+            </div>
+        </div>
+    </section>
 {% endblock %}
