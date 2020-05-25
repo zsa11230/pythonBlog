@@ -48,7 +48,6 @@ def article_more(request):
     except EmptyPage:
         return HttpResponse(None)
 
-    print("666666:" + str(len(page)))
     result = []
     for blog in page:
         tags = blog.tags.all()
@@ -88,6 +87,10 @@ def article_detail(request, article_id):
 
 # 文章新增页面
 def article_create_html(request):
+    # 如果用户未登录则跳登录页面
+    user = request.user
+    if user.username == '':
+        return redirect('/user/login')
     categories = models.Category.objects.all().order_by('-id')
     context = {
         'categories': categories,  # 分类
@@ -96,8 +99,9 @@ def article_create_html(request):
 
 
 def article_create_request(request):
+    # 如果用户未登录则跳登录页面
     user = request.user
-    if user is None:
+    if user.username == '':
         return redirect('/user/login')
     title = request.POST.get("title")
     image_url = request.POST.get("image_url")

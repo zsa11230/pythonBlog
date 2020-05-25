@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="icon" type="image/x-icon" href="#" />
+    <link type="text/css" rel="styleSheet"  href="/static/css/login.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>账号登录</title>
+    <style>
+        input:-webkit-autofill , textarea:-webkit-autofill, select:-webkit-autofill {
+            -webkit-text-fill-color: #ededed !important;
+            -webkit-box-shadow: 0 0 0px 1000px transparent inset !important;
+            background-color:transparent;
+            background-image: none;
+            transition: background-color 50000s ease-in-out 0s; //背景色透明 生效时长 过渡效果 启用时延迟的时间
+        }
+        input {
+            background-color:transparent;
+        }
+    </style>
+</head>
+
+
+<body>
+<div id="bg">
+    <div id="hint"><!-- 提示框 -->
+        <p>登录失败</p>
+    </div>
+    <div id="login_wrap">
+        <div id="login"><!-- 登录注册切换动画 -->
+            <div id="status">
+                <i style="top: 0">Log/Sign in</i>
+            </div>
+            <span>
+                    <form action="/user/login_request" method="POST">
+                        {% csrf_token %}
+                        <p class="form"><input type="text" name="username" id="username" placeholder="username" /></p>
+                        <p class="form"><input type="password" name="password" id="password" placeholder="password"></p>
+                        <input type="submit" value="Sign in/Log in" class="btn" style="margin-right: 20px;">
+                    </form>
+                    <a href="#">Forget your password?</a>
+                </span>
+        </div>
+
+        <div id="login_img"><!-- 图片绘制框 -->
+            <span class="circle">
+                    <span></span>
+                    <span></span>
+                </span>
+            <span class="star">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </span>
+            <span class="fly_star">
+                    <span></span>
+                    <span></span>
+                </span>
+            <p id="title">CLOUD</p>
+        </div>
+    </div>
+</div>
+</body>
+<script>
+
+</script>
+</html>
