@@ -4,6 +4,8 @@ from django.shortcuts import render, redirect
 from article import models
 from django.core.paginator import Paginator, EmptyPage
 
+from article.models import Tags
+
 
 def index(request):
     # 获取文章列表
@@ -108,9 +110,17 @@ def article_create_request(request):
     intro = request.POST.get("intro")
     category_id = int(request.POST.get("category"))
     category = models.Category.objects.get(id=category_id)
-    tag_id = int(request.POST.get("tags"))
-    tags = models.Tags.objects.get(id=tag_id)
     body = request.POST.get("body")
     new_article = models.Article.objects.create(title=title, image_url=image_url
                                                 , intro=intro, category=category, body=body, user=user, hits=0)
+    # 保存标签
+    tags = request.POST.get("tags")
+    tags_array = tags.replace("，", ",").replace(" ", ",").replace(";", ",").replace("；", ",").split(',')
+    for tag in tags_array:
+        try:
+            t = models.Tags.objects.get(name=tag)
+        except Tags.DoesNotExist:
+            # 如果标签不存在则新增标签
+            t = models.Tags.objects.create(name=tag)
+        new_article.tags.add(t)
     return redirect('/article/detail/' + str(new_article.id))
