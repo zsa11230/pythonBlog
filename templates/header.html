@@ -20,11 +20,10 @@
                 <ul class="cl">
                     <li class="userInfo dropDown dropDown_hover">
                         {% if request.user.username != '' %}
-                            <a href="/article/create">写文章</a>&nbsp;&nbsp;{{ request.user }}<a href="user/logout">&nbsp;登出</a>
+                            {% if request.user.is_superuser %}<a href="/user/backstage/manage">后台管理</a> {% endif %}<a href="/article/create">写文章</a>&nbsp;&nbsp;{{ request.user }}<a href="user/logout">&nbsp;登出</a>
                         {% else %}
                             <a href="user/login">&nbsp;登入</a>
                         {% endif %}
-
                     </li>
                 </ul>
             </nav>

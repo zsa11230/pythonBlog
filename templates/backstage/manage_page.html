@@ -1,0 +1,21 @@
+{% block page %}
+    <div class='page-nav'>
+        <ul>
+            <li><a href="/user/backstage/manage/article">首页</a></li>
+            {% if page.has_previous %}
+                <li><a href="/user/backstage/manage/article?current={{ page.previous_page_number }}">上一页</a></li>
+            {% endif %}
+            {% for num in page.paginator.page_range%}
+                {%if pindex == page.number%}
+                    <li>{{ num }}</li>
+                {%else%}
+                    <li><a href="/user/backstage/manage/article?current={{ num }}">{{ num }}</a></li>
+                {%endif%}
+            {% endfor %}
+            {% if page.has_next %}
+                <li><a href="/user/backstage/manage/article?current={{ page.next_page_number }}">下一页</a></li>
+            {% endif %}
+            <li><a href="/user/backstage/manage/article?current={{ page.paginator.num_pages }}">末页</a></li>
+        </ul>
+    </div>
+{% endblock %}

@@ -26,5 +26,5 @@ urlpatterns = [
     # 后台管理页面
     path('backstage/manage',views.backstage_manage),
     # 后台文章管理页面
-    # path("backstage/manage/article", views.backstage_article_manage),
+    path("backstage/manage/article", views.backstage_article_manage),
 ]
