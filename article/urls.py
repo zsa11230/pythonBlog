@@ -27,4 +27,6 @@ urlpatterns = [
     path('create_request', views.article_create_request),
     # 首页加载更多文章ajax
     path('more', views.article_more),
+    # 文章删除接口
+    path('delete/<int:article_id>', views.article_delete_request),
 ]

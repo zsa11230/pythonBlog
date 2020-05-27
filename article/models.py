@@ -51,4 +51,6 @@ class Article(models.Model):
     # created_time，我们使用了DateTimeField字段，添加了一个auto_now_add参数，自动获取添加时间！
     created_time = models.DateTimeField('发布时间', auto_now_add=True)
     # 点击数
-    hits = models.IntegerField('点击数')
+    hits = models.IntegerField('点击数', default=0)
+    # 逻辑删除标记
+    del_flag = models.BooleanField('逻辑删除标记', default=False)

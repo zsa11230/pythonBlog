@@ -56,7 +56,7 @@ def backstage_article_manage(request):
     if manage_flag:
         size = request.GET.get('size')
         current = request.GET.get('current')
-        blog_index = models.Article.objects.all().order_by('-id')
+        blog_index = models.Article.objects.filter(del_flag=False).all().order_by('-id')
         if current is None:
             current = 1
         else:

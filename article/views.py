@@ -9,7 +9,7 @@ from article.models import Tags
 
 def index(request):
     # 获取文章列表
-    blog_images = models.Article.objects.all().order_by('hits')
+    blog_images = models.Article.objects.filter(del_flag=False).all().order_by('hits')
     tags = models.Tags.objects.order_by('-id')[0:20]
     images = []
     for art in blog_images:
@@ -22,7 +22,7 @@ def index(request):
                 images.append(img)
             else:
                 break
-    blog_index = models.Article.objects.all().order_by('-id')[0:10]
+    blog_index = models.Article.objects.filter(del_flag=False).all().order_by('-id')[0:10]
     context = {
         'tags': tags,  # 标签
         'images': images,  # 轮播图
@@ -33,7 +33,7 @@ def index(request):
 
 # 加载更多ajax
 def article_more(request):
-    blog_index = models.Article.objects.all().order_by('-id')
+    blog_index = models.Article.objects.filter(del_flag=False).all().order_by('-id')
     size = request.GET.get('size')
     current = request.GET.get('current')
     if current is None or current == '':
@@ -124,3 +124,14 @@ def article_create_request(request):
             t = models.Tags.objects.create(name=tag)
         new_article.tags.add(t)
     return redirect('/article/detail/' + str(new_article.id))
+
+
+def article_delete_request(request, article_id):
+    manage_flag = request.user.is_superuser
+    if manage_flag:
+        blog = models.Article.objects.get(id=article_id)
+        blog.del_flag = True
+        blog.save()
+        return redirect('/user/backstage/manage/article')
+    else:
+        return redirect('/')
