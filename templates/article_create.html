@@ -2,28 +2,86 @@
 {% load static from staticfiles %}
 {% block webbody %}
     <script src="/static/js/HandyEditor.min.js"></script>
-    <form action="/article/create_request" method="post">
-        {% csrf_token %}
-        标题：
-        <input name="title" placeholder="请输入内容">
-        引用图片地址：
-        <input name="image_url" placeholder="请输入内容">
-        简介：
-        <input name="intro" placeholder="请输入内容">
-        <textarea id="editor" name="body" rows="5" style="display: none;"></textarea>
-        <br>
-        分类：
-        <select name="category">
-            {% for category in categories %}
-                <option value ="{{ category.id }}">{{ category.name }}</option>
-            {% endfor %}
-        </select>
-        <p>
-        标签(多标签请用,或；或;或 或，隔开)：
-            <input name="tags" placeholder="请输入内容">
-            <button onclick="getSubmit()">保存</button>
-    </form>
+    <style>
+        .view-container {
+            -webkit-box-flex: 1;
+            -ms-flex: 1;
+            flex: 1;
+            background: #fff;
+            text-align: left;
+            padding-top: 20px;
+            width: 60%;
+            margin: auto;
+        }
 
+        .input__inner {
+            -webkit-appearance: none;
+            background-color: #fff;
+            background-image: none;
+            border-radius: 4px;
+            border: 1px solid #dcdfe6;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            color: #606266;
+            display: inline-block;
+            font-size: inherit;
+            height: 40px;
+            line-height: 40px;
+            outline: none;
+            padding: 0 15px;
+            -webkit-transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+            transition: border-color .2s cubic-bezier(.645,.045,.355,1);
+            width: 100%;
+            margin-bottom:8px;
+        }
+
+        .button {
+            background-color: #555555;
+            border: none;
+            color: white;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 4px 2px;
+            cursor: pointer;
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+        }
+
+        .shadow:hover {
+            box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+        }
+
+        select {
+            width: 100%;
+            padding: 16px 20px;
+            border: none;
+            border-radius: 4px;
+            background-color: #f1f1f1;
+            margin-bottom:8px;
+        }
+
+    </style>
+    <div class="view-container">
+        <form action="/article/create_request" method="post">
+            {% csrf_token %}
+            <input class="input__inner" name="title" placeholder="请输入文章标题">
+            <input class="input__inner" name="image_url" placeholder="请输入引用图片地址">
+            <input class="input__inner" name="intro" placeholder="请输入文章简介">
+            <textarea id="editor" name="body" rows="5" style="display: none;"></textarea>
+            <br>
+            <select name="category">
+                <option value ="0">请选择文章分类</option>
+                {% for category in categories %}
+                    <option value ="{{ category.id }}">{{ category.name }}</option>
+                {% endfor %}
+            </select>
+            <input class="input__inner" name="tags" placeholder="请输入标签(多标签请用,或；或;或 或，隔开)">
+            <button class="button shadow" onclick="getSubmit()">保存</button>
+        </form>
+    </div>
 
     <script type="text/javascript">
         const he = HE.getEditor('editor');
