@@ -1,13 +1,29 @@
 import json
-from django.http import HttpResponse, JsonResponse
+from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from article import models
 from django.core.paginator import Paginator, EmptyPage
-
 from article.models import Tags
+from pythonBlog.SqlCustomQuery import custom_query
 
 
+# 站点配置，首页导航栏
+def site_config():
+    sql_result = custom_query('SELECT tags_id, count(1) AS count FROM article_article_tags GROUP BY tags_id ORDER BY count DESC LIMIT 4')
+    tag_ids = []
+    for result in sql_result:
+        tag_ids.append(result[0])
+    tags = models.Tags.objects.filter(id__in=tag_ids)
+    context = {
+        'nav': tags,  # 导航标签
+    }
+    return context
+
+
+# 首页
 def index(request):
+    # 加载站点配置
+    context = site_config()
     # 获取文章列表
     blog_images = models.Article.objects.filter(del_flag=False).all().order_by('hits')
     tags = models.Tags.objects.order_by('-id')[0:20]
@@ -23,11 +39,9 @@ def index(request):
             else:
                 break
     blog_index = models.Article.objects.filter(del_flag=False).all().order_by('-id')[0:10]
-    context = {
-        'tags': tags,  # 标签
-        'images': images,  # 轮播图
-        "page": blog_index,  # 文章数据
-    }
+    context['tags'] = tags  # 标签
+    context['images'] = images  # 轮播图
+    context['page'] = blog_index  # 文章数据
     return render(request, 'index.html', context)
 
 
@@ -77,29 +91,30 @@ def article_more(request):
 
 # 文章详情页面
 def article_detail(request, article_id):
+    # 加载站点配置
+    context = site_config()
     blog = models.Article.objects.get(id=article_id)
     # 每访问一次增加一点击量
     blog.hits = blog.hits + 1
     blog.save()
-    context = {
-        'blog': blog,  # 文章内容数据
-    }
+    context['blog'] = blog,  # 文章内容数据
     return render(request, 'article_detail.html', context)
 
 
 # 文章新增页面
 def article_create_html(request):
+    # 加载站点配置
+    context = site_config()
     # 如果用户未登录则跳登录页面
     user = request.user
     if user.username == '':
         return redirect('/user/login')
     categories = models.Category.objects.all().order_by('-id')
-    context = {
-        'categories': categories,  # 分类
-    }
+    context['categories'] = categories,  # 分类
     return render(request, 'article_create.html', context)
 
 
+# 文章新增请求
 def article_create_request(request):
     # 如果用户未登录则跳登录页面
     user = request.user
@@ -126,6 +141,7 @@ def article_create_request(request):
     return redirect('/article/detail/' + str(new_article.id))
 
 
+# 文章删除请求
 def article_delete_request(request, article_id):
     manage_flag = request.user.is_superuser
     if manage_flag:
