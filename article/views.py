@@ -97,7 +97,7 @@ def article_detail(request, article_id):
     # 每访问一次增加一点击量
     blog.hits = blog.hits + 1
     blog.save()
-    context['blog'] = blog,  # 文章内容数据
+    context['blog'] = blog  # 文章内容数据
     return render(request, 'article_detail.html', context)
 
 
@@ -110,7 +110,7 @@ def article_create_html(request):
     if user.username == '':
         return redirect('/user/login')
     categories = models.Category.objects.all().order_by('-id')
-    context['categories'] = categories,  # 分类
+    context['categories'] = categories  # 分类
     return render(request, 'article_create.html', context)
 
 

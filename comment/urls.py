@@ -13,21 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-from django.contrib import admin
 from django.urls import path
-from article import views as article_views, urls as article_urls
-from django.conf.urls import url, include
-from common import urls as user_urls
-from comment import urls as comment_urls
+from comment import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
-    # 无路由情况下跳转到首页
-    url(r'^$', article_views.index),
-    # 引入用户部分路由
-    url(r'user/', include(user_urls)),
-    # 引入文章部分路由
-    url(r'article/', include(article_urls)),
-    # 引入评论部分路由
-    url(r'comment/', include(comment_urls)),
+    # 新增文章评论
+    path('create_comment', views.create_article_comment),
+    # 新增评论的子评论
+    path('create_child_comment', views.create_comment_child),
+    # 获取文章评论
+    path('article/<int:article_id>', views.get_article_comment),
 ]

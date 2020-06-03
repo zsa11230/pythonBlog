@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from common.models import User
 
 
 # 评论对象
@@ -19,7 +19,7 @@ class Comment(models.Model):
 
 
 # 评论子对象
-class CommentChild(models.Model):
+class Comment_child(models.Model):
     # 父级评论ID
     parent_id = models.IntegerField('父级评论ID', default=0)
     # 评论内容

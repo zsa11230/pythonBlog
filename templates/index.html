@@ -235,7 +235,6 @@
     <script>
         $("#moreBlog_btn").click(function(){
             let param = $("#current").val();
-            console.log(param);
             $.ajax({url:"/article/more?current="+param,success:function(result){
                 if(result !== 'None'){
                     const json_data = JSON.parse(result);

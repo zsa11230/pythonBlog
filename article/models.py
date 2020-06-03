@@ -1,5 +1,5 @@
 from django.db import models
-from django.contrib.auth.models import User
+from common.models import User
 
 
 # 数据模型设计好之后，我们就需要迁移数据到数据库。我们运行如下命令：

@@ -1,13 +1,54 @@
 {% extends "base.html" %}
 {% load static from staticfiles %}
 {% block webbody %}
+    <style>
+        .button {
+            background-color: #555555;
+            border: none;
+            color: white;
+            padding: 12px 24px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 10px;
+            margin: 4px 2px;
+            cursor: pointer;
+            -webkit-transition-duration: 0.4s; /* Safari */
+            transition-duration: 0.4s;
+        }
+
+        .shadow:hover {
+            box-shadow: 0 12px 16px 0 rgba(0, 0, 0, 0.24), 0 17px 50px 0 rgba(0, 0, 0, 0.19);
+        }
+
+        .input__inner {
+            -webkit-appearance: none;
+            background-color: #fff;
+            background-image: none;
+            border-radius: 4px;
+            border: 1px solid #dcdfe6;
+            -webkit-box-sizing: border-box;
+            box-sizing: border-box;
+            color: #606266;
+            display: inline-block;
+            font-size: inherit;
+            height: 40px;
+            line-height: 40px;
+            outline: none;
+            padding: 0 15px;
+            -webkit-transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+            transition: border-color .2s cubic-bezier(.645, .045, .355, 1);
+            width: 50%;
+            margin-bottom: 8px;
+        }
+    </style>
+
     <!--导航条-->
     <nav class="breadcrumb">
         <div class="container"><i class="Hui-iconfont">&#xe67f;</i> <a href="/" class="c-primary">首页</a> <span
                 class="c-gray en">&gt;</span> <span class="c-gray">文章</span> <span class="c-gray en">&gt;</span> <span
                 class="c-gray">{{ blog.title }}</span></div>
     </nav>
-
     <section class="container pt-20">
 
         <div class="row w_main_row">
@@ -49,58 +90,15 @@
                         <div class="panel-body" style="margin: 0 3%;">
                             <div class="mb-20">
                                 <ul class="commentList">
-                                    <li class="item cl"><a href="#"><i class="avatar size-L radius"><img alt=""
-                                                                                                         src="http://qzapp.qlogo.cn/qzapp/101388738/1CF8425D24660DB8C3EBB76C03D95F35/100"></i></a>
-                                        <div class="comment-main">
-                                            <header class="comment-header">
-                                                <div class="comment-meta"><a class="comment-author" href="#">老王</a>
-                                                    <time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20"
-                                                          class="f-r">2014-8-31 15:20
-                                                    </time>
-                                                </div>
-                                            </header>
-                                            <div class="comment-body">
-                                                <p> 是的</p>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="item cl"><a href="#"><i class="avatar size-L radius"><img alt=""
-                                                                                                         src="http://qzapp.qlogo.cn/qzapp/101388738/696C8A17B3383B88804BA92ECBAA5D81/100"></i></a>
-                                        <div class="comment-main">
-                                            <header class="comment-header">
-                                                <div class="comment-meta"><a class="comment-author" href="#">老王</a>
-                                                    <time title="2014年8月31日 下午3:20" datetime="2014-08-31T03:54:20"
-                                                          class="f-r">2014-8-31 15:20
-                                                    </time>
-                                                </div>
-                                            </header>
-                                            <div class="comment-body">
-                                                <p> +1</p>
-                                            </div>
-                                        </div>
-                                    </li>
 
                                 </ul>
-
                             </div>
                             <div class="line"></div>
                             <!--用于评论-->
-                            <div class="mt-20" id="ct">
-                                <div id="err" class="Huialert Huialert-danger hidden radius">成功状态提示</div>
-                                <textarea id="textarea1" name="comment" style="height:200px;"
-                                          placeholder="看完不留一发？"> </textarea>
-                                <div class="text-r mt-10">
-                                    <button onclick="getPlainTxt()" class="btn btn-primary radius"> 发表评论</button>
-                                </div>
-                            </div>
-                            <!--用于回复-->
-                            <div class="comment hidden mt-20">
-                                <div id="err2" class="Huialert Huialert-danger hidden radius">成功状态提示</div>
-                                <textarea class="textarea" style="height:100px;"> </textarea>
-                                <button onclick="hf(this);" type="button" class="btn btn-primary radius mt-10">回复
-                                </button>
-                                <a class="cancelReply f-r mt-10">取消回复</a>
-                            </div>
+                            <i class="avatar size-L radius"><img alt="" src="{{ request.user.avatar }}"></i>
+                            <input id="comment_content" class="input__inner" name="comment_content" placeholder="请留下你的精彩评论">
+                            <input id="comment_id" name="comment_id" type="hidden">
+                            <button class="button shadow" onclick="getComment()">评论</button>
 
                         </div>
                     </div>
@@ -140,6 +138,62 @@
 
             </div>
         </div>
-
     </section>
+    <!-- ajax获取评论 -->
+    <script>
+        $.ajax({
+            url: "/comment/article/{{ blog.id }}", success: function (result) {
+                if (result !== 'None') {
+                    const json_data = JSON.parse(result);
+                    for (let i = 0; i < json_data.comments.length; i++) {
+                        const comment = json_data.comments[i];
+                        const htmlText1 = '<li class="item cl"><a onclick="childComment(' + comment.id + ',\''+ comment.username+'\')"><i class="avatar size-L radius">';
+                        const htmlAvatar = '<img src="' + comment.avatar + '">';
+                        const htmlText2 = '</i></a><div class="comment-main"><header class="comment-header"><div class="comment-meta">';
+                        const htmlAuthor = '<a class="comment-author" href="#">' + comment.username + '</a>';
+                        const htmlTime = '<time title="' + comment.created_time + '" datetime="' + comment.created_time + '" class="f-r">' + comment.created_time + '</time>';
+                        const htmlContent = '</div></header><div class="comment-body"><p>' + comment.content + '</p>';
+                        let childComment = '';
+                        if(comment.child_comment.length > 0){
+                            for(let j = 0; j < comment.child_comment.length; j++){
+                                const child = comment.child_comment[j];
+                                childComment = childComment + '<hr><p style="line-height:48px"><i class="avatar size-L radius"><img src="'
+                                    + child.avatar + '"></i>' + child.username + '：' + child.content + '   - ' + child.created_time +'</p>';
+                            }
+                        }
+                        $(".commentList").append(htmlText1 + htmlAvatar + htmlText2 + htmlAuthor + htmlTime + htmlContent + childComment + '</div></div></li>')
+                    }
+                }
+            }
+        });
+    </script>
+    <script type="text/javascript">
+        function getComment() {
+            let param = $("#comment_content").val();
+            let comment_id = $("#comment_id").val();
+            if(comment_id === ''){
+                $.ajax({
+                    url: "/comment/create_comment?article_id={{ blog.id }}&content=" + param, success: function (result) {
+                        alert("评论成功！");
+                        location.reload()
+                    }
+                });
+            }
+            else{
+                //子评论
+                $.ajax({
+                    url: "/comment/create_child_comment?comment_id=" + comment_id + "&content=" + param, success: function (result) {
+                        alert("评论成功！");
+                        location.reload()
+                    }
+                });
+            }
+
+        }
+
+        function childComment(id,username) {
+            $("#comment_id").val(id);
+            $("#comment_content").val('@' + username + " ").focus();
+        }
+    </script>
 {% endblock %}
